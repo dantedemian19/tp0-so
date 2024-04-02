@@ -13,15 +13,18 @@ int main(void) {
 		switch (cod_op) {
 		case MENSAJE:
 			recibir_mensaje(cliente_fd);
-			break;
+			continue;
 		case PAQUETE:
 			lista = recibir_paquete(cliente_fd);
-			log_info(logger, "Me llegaron los siguientes valores:\n");
+			log_info(logger, "recived: \n");
 			list_iterate(lista, (void*) iterator);
-			break;
+			continue;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");
-			return EXIT_FAILURE;
+			log_info(logger, "Servidor listo para recibir al cliente");
+			int cliente_fd = esperar_cliente(server_fd);
+			continue;
+			//return EXIT_FAILURE;
 		default:
 			log_warning(logger,"Operacion desconocida. No quieras meter la pata");
 			break;
