@@ -1,4 +1,4 @@
-# Sistemas Operativos - TP0
+# Sistemas Operativos - TP0 (Terminado)
 
 ## ¿De qué trata?
 
