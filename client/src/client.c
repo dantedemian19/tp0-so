@@ -56,13 +56,6 @@ int main(void)
 		return 1;
 	}
 
-	// handshake
-	if (!handshake(conexion))
-	{
-		log_error(logger, "No se pudo realizar el handshake");
-		return 1;
-	}
-
 	// Enviamos al servidor el valor de CLAVE como mensaje
 	enviar_mensaje(valor, conexion);
 
@@ -89,10 +82,7 @@ void leer_consola(t_log *logger)
 {
 	char *leido;
 
-	if (logger == NULL)
-	{
-		exit(1);
-	}
+	if (logger == NULL)	exit(1);
 
 	// La primera te la dejo de yapa
 	leido = readline("> ");

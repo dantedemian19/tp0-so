@@ -48,6 +48,8 @@ int crear_conexion(char *ip, char* puerto)
 
 	freeaddrinfo(server_info);
 
+	if (!handshake(socket_cliente)) return -1;
+
 	return socket_cliente;
 }
 

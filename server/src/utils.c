@@ -53,8 +53,9 @@ int esperar_cliente(int socket_servidor)
 	if (socket_cliente == -1)
 	{
 		log_error(logger, "Error al aceptar un cliente");
-		exit(1);
+		return -1;
 	}
+
 	if(!handshake(socket_cliente))
 	{
 		close(socket_cliente);
