@@ -1,7 +1,5 @@
 #include"utils.h"
 
-t_log* logger;
-
 int iniciar_servidor(void)
 {
 	// Quitar esta línea cuando hayamos terminado de implementar la funcion
@@ -49,53 +47,27 @@ int esperar_cliente(int socket_servidor)
 	// Aceptamos un nuevo cliente
 	int socket_cliente;
 	
+
 	socket_cliente = accept(socket_servidor, NULL, NULL);
 	if (socket_cliente == -1)
 	{
 		log_error(logger, "Error al aceptar un cliente");
 		exit(1);
 	}
-	if(!handshake(socket_cliente))
-	{
-		close(socket_cliente);
-		return -1;
-	}
-	
 	log_info(logger, "Se conecto un cliente!");
 	return socket_cliente;
-}
-
-bool handshake(int socket_cliente)
-{
-	int handshake;
-	if(recv(socket_cliente, &handshake, sizeof(int), MSG_WAITALL) <= 0) 
-	{	// error case
-		log_error(logger, "Error al recibir handshake");
-		return false;
-	}
-
-	if(handshake != 1)
-	{
-		log_error(logger, "Handshake fallido");
-		send(socket_cliente, 0, sizeof(int), 0);
-		return false;
-	}
-	
-	log_info(logger, "Handshake exitoso");
-	send(socket_cliente, &handshake, sizeof(int), 0);
-	return true;
 }
 
 int recibir_operacion(int socket_cliente)
 {
 	int cod_op;
-	if(recv(socket_cliente, &cod_op, sizeof(int), MSG_WAITALL) <= 0)
+	if(recv(socket_cliente, &cod_op, sizeof(int), MSG_WAITALL) > 0)
+		return cod_op;
+	else
 	{
 		close(socket_cliente);
 		return -1;
 	}
-
-	return cod_op;
 }
 
 void* recibir_buffer(int* size, int socket_cliente)

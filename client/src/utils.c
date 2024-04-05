@@ -1,5 +1,6 @@
 #include "utils.h"
 
+t_log* logger;
 
 void* serializar_paquete(t_paquete* paquete, int bytes)
 {
@@ -117,4 +118,24 @@ void eliminar_paquete(t_paquete* paquete)
 void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
+}
+
+bool handshake(int socket_cliente)
+{
+	int handshake = 1;
+	send(socket_cliente, &handshake, sizeof(int), 0);
+
+	int respuesta;
+	recv(socket_cliente, &respuesta, sizeof(int), MSG_WAITALL);
+
+	if(respuesta == 1)
+	{
+		log_info(logger, "Handshake exitoso");
+		return true;
+	}
+	else
+	{
+		log_error(logger, "Handshake fallido");
+		return false;
+	}
 }
